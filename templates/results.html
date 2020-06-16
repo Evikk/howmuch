@@ -1,0 +1,102 @@
+    {% include "index.html" %}
+    {% block content %}
+    {% if zap_section != '' %}
+        <div class="text-gray-900 text-lg mx-4">Search Results for "{{choice}}":</div>
+        <div class="my-10 text-center text-2xl uppercase py-4 tracking-wide text-white opacity-75" style="background-color: #e94767">Amazon Results</div>
+    {% endif %}    
+        <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-around">
+            {% for x in amazon_section %}
+                {% if loop.index < limit %}    
+                    <div class="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden my-10 mx-4 h-auto">
+                        <div class="px-4 py-2 h-32">
+                            {% if x.find('span',class_='a-size-medium a-color-base a-text-normal') != None %}
+                                <h1 class="text-gray-900 font-bold text-sm">{{ x.find('span',class_='a-size-medium a-color-base a-text-normal')|safe }}</h1>
+                            {% else %}
+                                <h1 class="text-gray-900 font-bold text-sm">{{ x.find('span',class_='a-size-base-plus a-color-base a-text-normal')|safe }}</h1>
+                            {% endif %}
+                        </div>
+                        {% if x.find('div','a-section aok-relative s-image-fixed-height') != None %}
+                            <div class="h-56 w-full object-cover mt-2 mx-0">{{ x.find('div','a-section aok-relative s-image-fixed-height')|safe }}</div>
+                        {% else %}
+                            <div class="mt-2 mx-0 object-contain h-full">{{ x.find('div','a-section aok-relative s-image-square-aspect')|safe }}</div>
+                        {% endif %}
+                        <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
+                            <h1 class="text-gray-200 font-bold text-xl">{{ x.find('span',class_='a-offscreen')|safe }}</h1>
+                            <a class="px-3 py-1 bg-gray-200 text-sm text-gray-900 font-semibold rounded" href="https://amazon.com/{{ x.find('a',class_='a-link-normal a-text-normal')['href']|safe }}">Go To Page</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- End of Amazon Section -->
+        <!-- Ali Express Section -->
+        {% if ali_section != '' %}
+            <div class="my-10 text-center text-2xl uppercase py-4 tracking-wide text-white opacity-75" style="background-color: #e94767">Ali Express Results</div>
+            <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-around">
+        {% endif %}
+            {% for x in ali_section %}
+                {% if loop.index < limit %}    
+                    <div class="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden my-10 mx-4 h-auto">
+                        <div class="px-4 py-2 h-32">
+                            <h1 class="text-gray-900 font-bold text-sm">{{ x.find('a',class_='item-title')['title']|safe }}</h1>
+                        </div>
+                        <div class="h-56 w-full object-cover mt-2 mx-0">
+                            {{ x.find('img','item-img')|safe }}
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
+                            <h1 class="text-gray-200 font-bold text-md">{{ x.find('span',class_='price-current')|safe }}</h1>
+                            <a class="px-3 py-1 bg-gray-200 text-sm text-gray-900 font-semibold rounded" href="{{ x.find('a',class_='item-title')['href']|safe }}">Go To Page</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- End of Ali Express Section -->
+        <!-- Zap Section -->
+        {% if zap_section != '' %}
+            <div class="my-10 text-center text-2xl uppercase py-4 tracking-wide text-white opacity-75" style="background-color: #e94767">Zap Israel Results</div>
+            <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-around">
+        {% endif %}
+            {% if zap_results == None %}
+                {% if zap_template == 1 %}
+                    {% for x in zap_section %}
+                        {% if loop.index < limit %}    
+                            <div class="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden my-10 mx-4 h-auto">
+                                <div class="px-4 py-2 h-32">
+                                    <h1 class="text-gray-900 font-bold text-sm">{{ x.find('div',class_='ProdInfoTitle')|safe }}</h1>
+                                </div>
+                                <div class="h-56 w-full object-cover mt-2 mx-0">
+                                    {{ x.find('div',class_='ProdPic')|safe }}
+                                </div>
+                                <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
+                                    <h1 class="text-gray-200 font-bold text-md">{{ x.find('div',class_='pricesTxt')|safe }}</h1>
+                                    <a class="px-3 py-1 bg-gray-200 text-sm text-gray-900 font-semibold rounded" href="https://www.zap.co.il{{ x.find('div',class_='ProdInfoTitle').find('a')['href']|safe }}">Go To Page</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if zap_template == 2 %}  
+                    {% for x in zap_section2 %}
+                        {% if loop.index < limit %}    
+                            <div class="max-w-xs bg-white shadow-lg rounded-lg overflow-hidden my-10 mx-4 h-auto">
+                                <div class="px-4 py-2 h-32">
+                                    <h1 class="text-gray-900 font-bold text-sm">{{ x.find('div',class_='ProdName')|safe }}</h1>
+                                </div>
+                                <div class="h-56 w-full object-cover mt-2 mx-0">
+                                    {{ x.find('div',class_='ProductPic')|safe }}
+                                </div>
+                                <div class="flex items-center justify-between px-4 py-2 bg-gray-900">
+                                    <h1 class="text-gray-200 font-bold text-md">{{ x.find('div',class_='prices')|safe }}</h1>
+                                    <a class="px-3 py-1 bg-gray-200 text-sm text-gray-900 font-semibold rounded" href="https://www.zap.co.il{{ x.find('div',class_='ProdName').find('a')['href']|safe }}">Go To Page</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}    
+            {% else %}
+                <div class="text-gray-900 text-lg mx-4 block"> {{ zap_results.text }} </div> 
+            {% endif %}
+        </div>
+        
+    {% endblock %}
